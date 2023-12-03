@@ -5,6 +5,7 @@
         <LangVersion>latestmajor</LangVersion>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="AzureExtensions.Swashbuckle" Version="3.3.2" />
         <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.36.0" />
         <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
         <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.CosmosDB" Version="4.4.2" />
@@ -14,6 +15,7 @@
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
         <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.2.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
     </ItemGroup>
     <ItemGroup>
         <None Update="host.json">
