@@ -12,7 +12,7 @@ public class DiagramService: Service<Diagram>,IDiagramService
     {
     }
 
-    public async Task<bool> CheckForConflictingBook(Diagram diagram)
+    public async Task<bool> CheckForConflictingDiagram(Diagram diagram)
     {
         return (await _repository.GetByCondition(x => x.Id == diagram.Id)).Any();
     }

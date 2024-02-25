@@ -5,5 +5,5 @@ namespace ERDiagrams.Back.Services.Interfaces;
 
 public interface IDiagramService:IService<Diagram>
 {
-    public Task<bool> CheckForConflictingBook(Diagram diagram);
+    public Task<bool> CheckForConflictingDiagram(Diagram diagram);
 }
