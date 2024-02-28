@@ -48,7 +48,6 @@ public  class DiagramCrud
         }
     }
     
-    //todo:filter by user
     [FunctionName("GetDiagrams")]
     public async Task<IActionResult> GetAllDiagrams([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "diagrams")]
         HttpRequest req, ILogger log)
@@ -72,6 +71,30 @@ public  class DiagramCrud
         }
     }
     
+    [FunctionName("GetDiagramByUserId")]
+    public async Task<IActionResult> GetDiagramByUserId(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "diagrams/{userid}")] HttpRequest req, ILogger log,string userId)
+    {
+        try
+        {
+            var diagram = await _diagramService.GetByCondition(x=>x.User==userId);
+            if (diagram is null)
+            {
+                log.LogWarning($"No diagram exits with id: {userId}");
+                return new UnprocessableEntityObjectResult($"No diagram exits with id: {userId}");
+            }
+
+            return new OkObjectResult(diagram);
+        }
+        catch (Exception e)
+        {
+            
+            var errorMessage = $"Failed to fetch a diagram with id: {userId}";
+
+            log.LogError(e, errorMessage);
+            return new InternalServerErrorResult();
+        }
+    }
     [FunctionName("CreateDiagram")]
     public  async Task<IActionResult> CreateDiagrams(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "diagrams")] HttpRequest req, ILogger log)
@@ -80,6 +103,7 @@ public  class DiagramCrud
         try
         {
             var diagram = JsonConvert.DeserializeObject<Diagram>(diagramJson);
+            diagram.Id = Guid.NewGuid().ToString();
             if (await _diagramService.CheckForConflictingDiagram(diagram))
             {
                 log.LogWarning($"Diagram with matching title already exists in library: \"{diagram.Id}\"");
@@ -123,7 +147,7 @@ public  class DiagramCrud
     [FunctionName("UpdateDiagram")]
     public async Task<IActionResult> UpdateDiagram(
         [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "diagram/{id}")] HttpRequest req, ILogger log,
-        Guid id)
+        string id)
     {
         var diagramJson = await req.ReadAsStringAsync();
 

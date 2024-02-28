@@ -7,14 +7,14 @@ namespace ERDiagrams.Back.Models;
 
 public class Diagram : Entity
 {
-    [JsonProperty(PropertyName = "diagramId",Required = Required.Always)]
-    public Guid Id { get; set; }
+    [JsonProperty(PropertyName = "id",Required = Required.Always)]
+    public string Id { get; set; }
     [JsonProperty(PropertyName = "nodes",Required = Required.Always)]
     public IEnumerable<Node> Nodes { get; set; }
     [JsonProperty(PropertyName = "relationships",Required = Required.Always)]
     public IEnumerable<Relationship> Relationships { get; set; }
     [JsonProperty(PropertyName = "user",Required = Required.Always)]
-    public Guid User { get; set; }
+    public string User { get; set; }
 }
 
 public class Node
