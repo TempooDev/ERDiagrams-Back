@@ -60,7 +60,6 @@ namespace ERDiagrams.Back
             services.AddDbContext<CosmosContext>();
 
             #region Repositories
-            services.AddScoped<IRepository<Book>, BookRepository>();
             services.AddScoped<IRepository<Diagram>, DiagramRepository>();
             
 
@@ -69,7 +68,6 @@ namespace ERDiagrams.Back
             #region Services
 
             
-            services.AddScoped<IBookService, BookService>();
             services.AddScoped<IDiagramService, DiagramService>();
 
             #endregion

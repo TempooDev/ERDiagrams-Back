@@ -7,7 +7,6 @@ public class CosmosContext : DbContext
 {
     private readonly FunctionConfiguration _configuration;
 
-    public DbSet<Book> Books { get; set; }
     public DbSet<Diagram> Diagrams { get; set; }
     public CosmosContext(FunctionConfiguration configuration)
     {
@@ -17,7 +16,7 @@ public class CosmosContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .Entity<Book>().ToContainer("Diagrams")
+            .Entity<Diagram>().ToContainer("Diagrams")
             .HasNoDiscriminator().HasPartitionKey("Id");
     }
 

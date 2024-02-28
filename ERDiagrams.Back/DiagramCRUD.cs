@@ -123,7 +123,7 @@ public  class DiagramCrud
     [FunctionName("UpdateDiagram")]
     public async Task<IActionResult> UpdateDiagram(
         [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "diagram/{id}")] HttpRequest req, ILogger log,
-        string id)
+        Guid id)
     {
         var diagramJson = await req.ReadAsStringAsync();
 
