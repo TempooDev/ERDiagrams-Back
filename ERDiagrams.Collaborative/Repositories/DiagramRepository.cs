@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using ERDiagrams.Back.Models;
-using ERDiagrams.Back.Models.Interfaces;
-using ERDiagrams.Back.Repositories.Interfaces;
+using ERDiagrams.Collaborative.Models;
+using ERDiagrams.Collaborative.Models.Interfaces;
+using ERDiagrams.Collaborative.Repositories.Interfaces;
+using ERDiagrams.Collaborative.Models;
 
-namespace ERDiagrams.Back.Repositories;
+namespace ERDiagrams.Collaborative.Repositories;
 
 public class DiagramRepository : Repository<Diagram>
 {

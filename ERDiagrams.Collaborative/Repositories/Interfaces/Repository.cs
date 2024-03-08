@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
-using ERDiagrams.Back.Models.Interfaces;
+using ERDiagrams.Collaborative.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace ERDiagrams.Back.Repositories.Interfaces;
+namespace ERDiagrams.Collaborative.Repositories.Interfaces;
 
 public abstract class Repository<T>:IRepository<T> where T:class,IEntity
 {

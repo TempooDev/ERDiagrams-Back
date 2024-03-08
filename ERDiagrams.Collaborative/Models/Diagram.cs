@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
-using ERDiagrams.Back.Models.Interfaces;
+
+using ERDiagrams.Collaborative.Models.Interfaces;
 using Newtonsoft.Json;
 
-namespace ERDiagrams.Back.Models;
+namespace ERDiagrams.Collaborative.Models;
 
 public class Diagram : Entity
 {

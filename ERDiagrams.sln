@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERDiagrams.Back", "ERDiagrams.Back\ERDiagrams.Back.csproj", "{50705760-8492-40B9-AF3B-D44FB62345DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERDiagrams.Collaborative", "ERDiagrams.Collaborative\ERDiagrams.Collaborative.csproj", "{08589FBA-8D4A-412E-AAB1-70B5BA05729A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{50705760-8492-40B9-AF3B-D44FB62345DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{50705760-8492-40B9-AF3B-D44FB62345DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{50705760-8492-40B9-AF3B-D44FB62345DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{50705760-8492-40B9-AF3B-D44FB62345DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08589FBA-8D4A-412E-AAB1-70B5BA05729A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08589FBA-8D4A-412E-AAB1-70B5BA05729A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08589FBA-8D4A-412E-AAB1-70B5BA05729A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08589FBA-8D4A-412E-AAB1-70B5BA05729A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

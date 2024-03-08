@@ -1,10 +1,8 @@
-using System.Linq;
-using System.Threading.Tasks;
-using ERDiagrams.Back.Models;
-using ERDiagrams.Back.Repositories.Interfaces;
-using ERDiagrams.Back.Services.Interfaces;
+using ERDiagrams.Collaborative.Models;
+using ERDiagrams.Collaborative.Repositories.Interfaces;
+using ERDiagrams.Collaborative.Services.Interfaces;
 
-namespace ERDiagrams.Back.Services;
+namespace ERDiagrams.Collaborative.Services;
 
 public class DiagramService: Service<Diagram>,IDiagramService
 {

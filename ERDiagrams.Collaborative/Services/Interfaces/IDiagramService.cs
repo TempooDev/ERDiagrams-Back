@@ -1,7 +1,6 @@
-using System.Threading.Tasks;
-using ERDiagrams.Back.Models;
+using ERDiagrams.Collaborative.Models;
 
-namespace ERDiagrams.Back.Services.Interfaces;
+namespace ERDiagrams.Collaborative.Services.Interfaces;
 
 public interface IDiagramService:IService<Diagram>
 {

@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using ERDiagrams.Back.Models.Interfaces;
-using ERDiagrams.Back.Repositories.Interfaces;
+using ERDiagrams.Collaborative.Models.Interfaces;
+using ERDiagrams.Collaborative.Repositories.Interfaces;
 
-namespace ERDiagrams.Back.Services.Interfaces;
+namespace ERDiagrams.Collaborative.Services.Interfaces;
 
 public abstract class Service<T> :IService<T> where T:class, IEntity
 {

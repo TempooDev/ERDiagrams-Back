@@ -1,5 +1,5 @@
 using Newtonsoft.Json;
-namespace ERDiagrams.Back.Models.Interfaces;
+namespace ERDiagrams.Collaborative.Models.Interfaces;
 
 public  abstract class Entity: IEntity
 {

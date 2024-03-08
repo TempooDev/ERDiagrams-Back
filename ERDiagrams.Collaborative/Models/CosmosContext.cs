@@ -1,16 +1,17 @@
-using Microsoft.Azure.Cosmos.Serialization.HybridRow.Schemas;
+using System.Configuration;
+using ERDiagrams.Collaborative.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ERDiagrams.Back.Models;
+namespace ERDiagrams.Collaborative.Models;
 
 public class CosmosContext : DbContext
 {
-    private readonly FunctionConfiguration _configuration;
+    private readonly Configuration _configuration;
+
 
     public DbSet<Diagram> Diagrams { get; set; }
-    public CosmosContext(FunctionConfiguration configuration)
+    public CosmosContext()
     {
-        _configuration = configuration;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -23,9 +24,9 @@ public class CosmosContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseCosmos(
-            accountEndpoint: _configuration.CosmosAccountEndpoint,
-            accountKey: _configuration.CosmosAccountKey,
-            databaseName: _configuration.CosmosDatabaseName);
+            accountEndpoint: "https://cos-erdiagram.documents.azure.com:443/",
+            accountKey: "cQieo6D3c72LQ3VFxtlpwN6u0bArnKkVfM4PX36uGuFrFHfOUkCN4T11MY2xLFUoroYVVelz1JemACDbMJFCbw==",
+            databaseName: "ERDiagrmas");
     }
     
 }
