@@ -9,11 +9,11 @@ namespace ERDiagrams.Collaborative.Controllers;
 public class DiagramsController:ControllerBase
 {
      private readonly IDiagramService _diagramService;
-     private ILogger _logger;
-    public DiagramsController(IDiagramService diagramService, ILogger log)
+  
+    public DiagramsController(IDiagramService diagramService)
     {
         _diagramService = diagramService;
-        _logger = log;
+        //TODO: ADD LOGGER
     }
     
     
