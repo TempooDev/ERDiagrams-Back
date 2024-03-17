@@ -1,4 +1,6 @@
 using ERDiagrams.Collaborative.Hubs;
+using ERDiagrams.Collaborative.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
@@ -7,15 +9,11 @@ namespace ERDiagrams.Collaborative.Controllers;
 public class BoardController:ControllerBase
 {
     private IHubContext<BoardHub> _boardContext;
-
-    public BoardController(IHubContext<BoardHub> boardContext)
+    private readonly IDictionary<string, string> _connections;
+    public BoardController(IHubContext<BoardHub> boardContext, IDictionary<string,string> connections)
     {
         _boardContext = boardContext;
+        _connections = connections;
     }
-    [HttpGet]
-    public async Task<IActionResult> Send(string message)
-    {
-        await _boardContext.Clients.All.SendAsync("sendMessage", message);
-        return Ok();
-    }
+  
 }

@@ -11,6 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddDbContext<CosmosContext>();
+builder.Services.AddSingleton<IDictionary<string, UserConnectionRoom>>(opt => new Dictionary<string, UserConnectionRoom>());
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
