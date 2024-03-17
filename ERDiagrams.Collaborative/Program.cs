@@ -1,25 +1,29 @@
 using ERDiagrams.Collaborative.Hubs;
 using ERDiagrams.Collaborative.Models;
+using ERDiagrams.Collaborative.Repositories;
+using ERDiagrams.Collaborative.Repositories.Interfaces;
+using ERDiagrams.Collaborative.Services;
+using ERDiagrams.Collaborative.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddDbContext<CosmosContext>();
-builder.Services.AddSingleton<IDictionary<string, UserConnectionRoom>>(opt => new Dictionary<string, UserConnectionRoom>());
+builder.Services.AddScoped<IDiagramService,DiagramService>();
+builder.Services.AddScoped<IRepository<Diagram>, DiagramRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+
 
 app.UseHttpsRedirection();
 
