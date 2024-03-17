@@ -39,6 +39,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseCors();
 app.MapControllers();
-
 app.MapHub<BoardHub>("/hub/board");
 app.Run();
