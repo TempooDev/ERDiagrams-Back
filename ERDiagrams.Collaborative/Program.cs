@@ -21,13 +21,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",
         builder => builder
+            .WithOrigins("http://localhost:3000/chat")
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .AllowAnyOrigin()
             );
 });
 var app = builder.Build();
-
+app.UseCors("CorsPolicy");
 // Configure the HTTP request pipeline.
 
     app.UseSwagger();
@@ -37,7 +37,8 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-app.UseCors();
+
 app.MapControllers();
 app.MapHub<BoardHub>("/hub/board");
+app.MapHub<ChatHub>("/hub/chat");
 app.Run();

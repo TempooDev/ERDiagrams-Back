@@ -1,5 +1,6 @@
 using ERDiagrams.Collaborative.Models;
 using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.AspNetCore.SignalR;
 
 namespace ERDiagrams.Collaborative.Hubs;
