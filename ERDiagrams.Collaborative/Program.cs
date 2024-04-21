@@ -17,6 +17,15 @@ builder.Services.AddSignalR();
 builder.Services.AddDbContext<CosmosContext>();
 builder.Services.AddScoped<IDiagramService,DiagramService>();
 builder.Services.AddScoped<IRepository<Diagram>, DiagramRepository>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy",
+        builder => builder
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowAnyOrigin()
+            );
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,8 +37,7 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.UseCors();
 app.MapControllers();
-
 app.MapHub<BoardHub>("/hub/board");
 app.Run();
