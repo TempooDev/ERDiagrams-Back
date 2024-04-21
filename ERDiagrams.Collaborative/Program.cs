@@ -23,11 +23,12 @@ builder.Services.AddCors(options =>
         builder => builder
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .AllowAnyOrigin()
+            .WithOrigins("http://localhost:3000","https://erdiagrams-react.vercel.app/")
+            .AllowCredentials()
             );
 });
 var app = builder.Build();
-
+app.UseCors("CorsPolicy");
 // Configure the HTTP request pipeline.
 
     app.UseSwagger();
@@ -37,7 +38,9 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-app.UseCors();
+
 app.MapControllers();
-app.MapHub<BoardHub>("/hub/board");
+// app.MapHub<BoardHub>("/hub/board");
+app.MapHub<ChatHub>("/hub/chat");
+
 app.Run();
