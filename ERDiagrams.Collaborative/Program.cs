@@ -23,7 +23,7 @@ builder.Services.AddCors(options =>
         builder => builder
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .WithOrigins("http://localhost:3000","https://erdiagrams-react.vercel.app/")
+            .AllowAnyOrigin()
             .AllowCredentials()
             );
 });
