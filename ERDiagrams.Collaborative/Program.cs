@@ -14,9 +14,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
-builder.Services.AddDbContext<CosmosContext>();
+
+// Add services to the container.
+builder.Services.Configure<DiagramDatabaseSettings>(
+    builder.Configuration.GetSection("ConnectionStrings"));
+builder.Services.AddSingleton<IRepository<Diagram>, DiagramsRepository>();
 builder.Services.AddScoped<IDiagramService,DiagramService>();
-builder.Services.AddScoped<IRepository<Diagram>, DiagramRepository>();
+builder.Services.AddControllers()
+    .AddJsonOptions(
+        options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",

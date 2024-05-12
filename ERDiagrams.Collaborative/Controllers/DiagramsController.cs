@@ -75,30 +75,30 @@ public async Task<IActionResult> GetAllDiagrams(
         }
     }
     
-    [HttpGet("user/{userId}")]
-    public async Task<IActionResult> GetDiagramByUserId(
-        string userId)
-    {
-        try
-        {
-            var diagram = await _diagramService.GetByCondition(x=>x.User==userId);
-            if (diagram is null)
-            {
-                
-                return new UnprocessableEntityObjectResult($"No diagram exits with id: {userId}");
-            }
-    
-            return new OkObjectResult(diagram);
-        }
-        catch (Exception e)
-        {
-            
-            var errorMessage = $"Failed to fetch a diagram with id: {userId}";
-    
-            
-            return new BadRequestResult();
-        }
-    }
+    // [HttpGet("user/{userId}")]
+    // public async Task<IActionResult> GetDiagramByUserId(
+    //     string userId)
+    // {
+    //     try
+    //     {
+    //         var diagram = await _diagramService.GetByCondition(x=> x.UserId == userId);
+    //         if (diagram is null)
+    //         {
+    //             
+    //             return new UnprocessableEntityObjectResult($"No diagram exits with id: {userId}");
+    //         }
+    //
+    //         return new OkObjectResult(diagram);
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         
+    //         var errorMessage = $"Failed to fetch a diagram with id: {userId}";
+    //
+    //         
+    //         return new BadRequestResult();
+    //     }
+    // }
     [HttpPost]
     public  async Task<IActionResult> CreateDiagrams(
        Diagram diagram  )
@@ -108,12 +108,12 @@ public async Task<IActionResult> GetAllDiagrams(
         try
         {
            
-            diagram.Id = Guid.NewGuid().ToString();
+            diagram._id = Guid.NewGuid().ToString();
             if (await _diagramService.CheckForConflictingDiagram(diagram))
             {
                 
                 return new ConflictObjectResult(
-                    $"Diagram with matching title already exists in library: \"{diagram.Id}\"");
+                    $"Diagram with matching title already exists in library: \"{diagram._id}\"");
             }
     
             await _diagramService.Create(diagram);
@@ -159,9 +159,9 @@ public async Task<IActionResult> GetAllDiagrams(
         try
         {
            
-            diagram.Id = id;
+            diagram._id = id;
     
-            await _diagramService.Update(diagram);
+            await _diagramService.Update(id,diagram);
             return new OkObjectResult(diagram);
         }
         catch (Exception e)
