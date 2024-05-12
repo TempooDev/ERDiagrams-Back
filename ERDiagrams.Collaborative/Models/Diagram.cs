@@ -1,18 +1,19 @@
 
 using ERDiagrams.Collaborative.Models.Interfaces;
 using Newtonsoft.Json;
-
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 namespace ERDiagrams.Collaborative.Models;
 
 public class Diagram : Entity
 {
+    
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
     [JsonProperty(PropertyName = "id",Required = Required.Always)]
     public string Id { get; set; }
-    [JsonProperty(PropertyName = "nodes",Required = Required.Always)]
     public IEnumerable<Node> Nodes { get; set; }
-    [JsonProperty(PropertyName = "relationships",Required = Required.Always)]
     public IEnumerable<Relationship> Relationships { get; set; }
-    [JsonProperty(PropertyName = "user",Required = Required.Always)]
     public string User { get; set; }
 }
 

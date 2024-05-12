@@ -17,3 +17,4 @@ public class DiagramService: Service<Diagram>,IDiagramService
         return (await _repository.GetByCondition(x => x.Id == diagram.Id)).Any();
     }
 }
+
