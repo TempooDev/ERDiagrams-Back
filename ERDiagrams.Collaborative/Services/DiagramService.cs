@@ -14,7 +14,12 @@ public class DiagramService: Service<Diagram>,IDiagramService
     }
     public async Task<bool> CheckForConflictingDiagram(Diagram diagram)
     {
-        return (await _repository.GetByCondition(x => x.Id == diagram.Id)).Any();
+        return (await _repository.GetByCondition(x => x._id == diagram._id)).Any();
+    }
+
+    public async Task<IEnumerable<Diagram>?> GetByCondition(Func<Diagram, bool> func)
+    {
+        return (await _repository.GetByCondition(predicate: x => func(x))).ToList();
     }
 }
 

@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Linq.Expressions;
 using ERDiagrams.Collaborative.Models;
 using ERDiagrams.Collaborative.Repositories.Interfaces;
 using Microsoft.Extensions.Options;
@@ -21,18 +23,21 @@ public class DiagramsRepository: IRepository<Diagram>
             diagramDatabaseSettings.Value.DiagramsCollectionName);
     }
 
-    public async Task<IEnumerable<Diagram>> GetAsync() =>
+    public async Task<List<Diagram>> GetAsync() =>
         await _diagramCollection.Find(_ => true).ToListAsync();
 
     public async Task<Diagram?> GetAsync(string id) =>
-        await _diagramCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+        await _diagramCollection.Find(x => x._id == id).FirstOrDefaultAsync();
+    
+    public async Task<IEnumerable<Diagram>> GetByCondition(Expression<Func<Diagram, bool>> predicate) =>
+        await _diagramCollection.Find(predicate).ToListAsync();
 
     public async Task CreateAsync(Diagram newBook) =>
         await _diagramCollection.InsertOneAsync(newBook);
 
     public async Task UpdateAsync(string id, Diagram updateDiagram) =>
-        await _diagramCollection.ReplaceOneAsync(x => x.Id == id, updateDiagram);
+        await _diagramCollection.ReplaceOneAsync(x => x._id == id, updateDiagram);
 
     public async Task RemoveAsync(string id) =>
-        await _diagramCollection.DeleteOneAsync(x => x.Id == id);
+        await _diagramCollection.DeleteOneAsync(x => x._id == id);
 }

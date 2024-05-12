@@ -1,14 +1,13 @@
 using System.Linq.Expressions;
-using ERDiagrams.Collaborative.Models.Interfaces;
+
 
 namespace ERDiagrams.Collaborative.Services.Interfaces;
 
-public interface IService<T> where T : class,IEntity
+public interface IService<T> where T : class
 {
     public Task<T> GetById(string id);
     public Task<IEnumerable<T>> GetAll();
-    public Task<IEnumerable<T>> GetByCondition(Expression<Func<T, bool>> expression);
-    public Task<T> Create(T entity);
-    public Task<T> Update(T entity);
+    public Task Create(T entity);
+    public Task Update(string id,T entity);
     public Task Delete(string id);   
 }

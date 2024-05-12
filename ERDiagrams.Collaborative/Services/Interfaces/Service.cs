@@ -1,10 +1,10 @@
 using System.Linq.Expressions;
-using ERDiagrams.Collaborative.Models.Interfaces;
+
 using ERDiagrams.Collaborative.Repositories.Interfaces;
 
 namespace ERDiagrams.Collaborative.Services.Interfaces;
 
-public abstract class Service<T> :IService<T> where T:class, IEntity
+public abstract class Service<T> :IService<T> where T:class
 {
     protected readonly IRepository<T> _repository;
 
@@ -13,16 +13,15 @@ public abstract class Service<T> :IService<T> where T:class, IEntity
         _repository = repository;
     }
 
-    public virtual async Task<T> GetById(string id) => await _repository.GetById(id);
+    public virtual async Task<T> GetById(string id) => await _repository.GetAsync(id);
 
-    public virtual async Task<IEnumerable<T>> GetAll() => await _repository.GetAll();
+    public virtual async Task<IEnumerable<T>> GetAll() => await _repository.GetAsync();
 
-    public virtual async Task<IEnumerable<T>> GetByCondition(Expression<Func<T, bool>> expression) => await _repository.GetByCondition(expression);
 
-    public virtual async Task<T> Create(T entity) => await _repository.Create(entity);
+    public virtual async Task Create(T entity) => await _repository.CreateAsync(entity);
 
-    public virtual async Task<T> Update(T entity) => await _repository.Update(entity);
+    public virtual async Task Update(string id,T entity) => await _repository.UpdateAsync(id, entity);
 
-    public virtual async Task Delete(string id) => await _repository.Delete(id);
+    public virtual async Task Delete(string id) => await _repository.RemoveAsync(id);
 
 }
