@@ -75,30 +75,30 @@ public async Task<IActionResult> GetAllDiagrams(
         }
     }
     
-    // [HttpGet("user/{userId}")]
-    // public async Task<IActionResult> GetDiagramByUserId(
-    //     string userId)
-    // {
-    //     try
-    //     {
-    //         var diagram = await _diagramService.GetByCondition(x=> x.UserId == userId);
-    //         if (diagram is null)
-    //         {
-    //             
-    //             return new UnprocessableEntityObjectResult($"No diagram exits with id: {userId}");
-    //         }
-    //
-    //         return new OkObjectResult(diagram);
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         
-    //         var errorMessage = $"Failed to fetch a diagram with id: {userId}";
-    //
-    //         
-    //         return new BadRequestResult();
-    //     }
-    // }
+    [HttpGet("user/{userId}")]
+    public async Task<IActionResult> GetDiagramByUserId(
+        string userId)
+    {
+        try
+        {
+            var diagram = await _diagramService.GetByCondition(x=> x.UserId == userId);
+            if (diagram is null)
+            {
+                
+                return new UnprocessableEntityObjectResult($"No diagram exits with id: {userId}");
+            }
+    
+            return new OkObjectResult(diagram);
+        }
+        catch (Exception e)
+        {
+            
+            var errorMessage = $"Failed to fetch a diagram with id: {userId}";
+    
+            
+            return new BadRequestResult();
+        }
+    }
     [HttpPost]
     public  async Task<IActionResult> CreateDiagrams(
        Diagram diagram  )

@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using ERDiagrams.Collaborative.Models;
 using ERDiagrams.Collaborative.Repositories.Interfaces;
 using ERDiagrams.Collaborative.Services.Interfaces;
@@ -17,9 +18,9 @@ public class DiagramService: Service<Diagram>,IDiagramService
         return (await _repository.GetByCondition(x => x._id == diagram._id)).Any();
     }
 
-    public async Task<IEnumerable<Diagram>?> GetByCondition(Func<Diagram, bool> func)
+    public async Task<IEnumerable<Diagram>?> GetByCondition(Expression<Func<Diagram,bool>> predicate)
     {
-        return (await _repository.GetByCondition(predicate: x => func(x))).ToList();
+        return (await _repository.GetByCondition(predicate)).ToList();
     }
 }
 
