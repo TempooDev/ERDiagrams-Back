@@ -95,8 +95,7 @@ public async Task<IActionResult> GetAllDiagrams(
             
             var errorMessage = $"Failed to fetch a diagram with id: {userId}";
     
-            
-            return new BadRequestResult();
+            return new BadRequestObjectResult(e.Message);
         }
     }
     [HttpPost]
@@ -125,7 +124,7 @@ public async Task<IActionResult> GetAllDiagrams(
             var errorMessage = $"Failed to create a diagram: {diagram}";
             
             
-            return new BadRequestObjectResult(errorMessage);
+            return new BadRequestObjectResult(e.Message);
         }
     }
     
