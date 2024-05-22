@@ -17,7 +17,7 @@ builder.Services.AddSignalR();
 
 // Add services to the container.
 builder.Services.Configure<DiagramDatabaseSettings>(
-builder.Configuration.GetSection(Environment.GetEnvironmentVariable("ConnectionStrings")));
+builder.Configuration.GetSection("ConnectionStrings"));
 builder.Services.AddSingleton<IRepository<Diagram>, DiagramsRepository>();
 builder.Services.AddScoped<IDiagramService,DiagramService>();
 builder.Services.AddControllers()
