@@ -60,17 +60,25 @@ app.MapGet("/diagrams", ([FromServices] IMongoClient mongoClient) =>
     .WithName("GetAllDiagrams")
     .WithOpenApi();
 
-app.MapGet("/diagrams/{id}", ([FromServices] IMongoClient mongoClient, string id) =>
+app.MapGet("/diagrams/{id}", DiagramDto ([FromServices] IMongoClient mongoClient, string id) =>
     {
+        
+        var mapper = config.CreateMapper();
         var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
-        return database.Diagrams.FirstOrDefaultAsync(diagram => diagram.diagramId == id);
+        var diagram =  database.Diagrams.FirstOrDefaultAsync(diagram => diagram.diagramId == id);
+        Task.WaitAll();
+        return mapper.Map<Diagram, DiagramDto>(diagram.Result);
+        
     }).WithName("GetDiagramById")
     .WithOpenApi();
 
 app.MapGet("/diagrams/user/{userId}", ([FromServices] IMongoClient mongoClient, string userId) =>
     {
+        var mapper = config.CreateMapper();
         var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
-        return database.Diagrams.Where(diagram => diagram.userId == userId).ToArrayAsync();
+        var diagramResult = database.Diagrams.Where(diagram => diagram.userId == userId).ToArrayAsync();
+        Task.WaitAll();
+        return mapper.Map<Diagram[], DiagramDto[]>(diagramResult.Result);
     }).WithName("GetDiagramsByUserId")
     .WithOpenApi();
 
