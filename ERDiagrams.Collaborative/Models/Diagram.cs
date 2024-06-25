@@ -60,10 +60,10 @@ public class Location
 public class Property
 {
     [JsonProperty(PropertyName = "name",Required = Required.Always)]
-    public string? propertyName { get; set; }
+    public string? name { get; set; }
     
     [JsonProperty(PropertyName = "iskey",Required = Required.Always)]
-    public bool? isKey { get; set; }
+    public bool? iskey { get; set; }
     
     [JsonProperty(PropertyName = "type",Required = Required.Always)]
     public string type { get; set; }
