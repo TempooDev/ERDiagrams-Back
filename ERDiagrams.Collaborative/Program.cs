@@ -1,4 +1,6 @@
+using AutoMapper;
 using ERDiagrams.Collaborative.Hubs;
+using ERDiagrams.Collaborative.Models;
 using ERDiagrams.Collaborative.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +33,7 @@ builder.Services.AddCors(options =>
             .AllowCredentials()
             );
 });
+var config = new MapperConfiguration(cfg => cfg.CreateMap<Diagram, DiagramDto>());
 var app = builder.Build();
 app.UseCors("CorsPolicy");
 // Configure the HTTP request pipeline.
@@ -47,8 +50,12 @@ app.MapControllers();
 
 app.MapGet("/diagrams", ([FromServices] IMongoClient mongoClient) =>
     {
+        var mapper = config.CreateMapper();
         var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
-        return database.Diagrams.ToArrayAsync();
+        var diagrams =database.Diagrams.ToArrayAsync();
+        Task.WaitAll();
+        return mapper.Map<Diagram[], DiagramDto[]>(diagrams.Result);
+
     })
     .WithName("GetAllDiagrams")
     .WithOpenApi();
