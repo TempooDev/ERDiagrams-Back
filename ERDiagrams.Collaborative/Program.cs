@@ -4,6 +4,7 @@ using ERDiagrams.Collaborative.Models;
 using ERDiagrams.Collaborative.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -81,8 +82,44 @@ app.MapGet("/diagrams/user/{userId}", ([FromServices] IMongoClient mongoClient, 
         return mapper.Map<Diagram[], DiagramDto[]>(diagramResult.Result);
     }).WithName("GetDiagramsByUserId")
     .WithOpenApi();
+app.MapPost("/diagrams", async ([FromServices] IMongoClient mongoClient, Diagram diagram) =>
+    {
+        var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
+        database.Diagrams.Add(diagram);
+        await database.SaveChangesAsync();
+        return Results.Created($"/diagrams/{diagram.diagramId}", diagram);
+    }).WithName("PostDiagram")
+    .WithOpenApi();
+
+app.MapPut("/diagrams/{id}", async ([FromServices] IMongoClient mongoClient, string diagramId, DiagramDto diagramToUpdate) =>
+    {
+        var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
+        var diagram =  database.Diagrams.FirstOrDefaultAsync(dia => dia.diagramId.Equals( diagramId));
+        Task.WaitAll();
+        if (diagram.Result is null) return Results.NotFound();
+        diagram.Result.image = diagramToUpdate.image;
+        diagram.Result.name = diagramToUpdate.name;
+        diagram.Result.linkDataArray = diagramToUpdate.linkDataArray;
+        diagram.Result.nodeDataArray = diagramToUpdate.nodeDataArray;
+        await database.SaveChangesAsync();
+        return Results.NoContent();
+
+    }).WithName("UpdateDiagram")
+    .WithOpenApi();
+
+app.MapDelete("/diagrams/{id}", async ([FromServices] IMongoClient mongoClient, string diagramId) =>
+{
+    var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
+    if (await database.Diagrams.FirstOrDefaultAsync(dia => dia.diagramId == diagramId) is Diagram diagram)
+    {
+        database.Diagrams.Remove(diagram);
+        await database.SaveChangesAsync();
+        return Results.NoContent();
+    }
+
+    return Results.NotFound();
+});
 
 app.MapHub<BoardHub>("/hub/board");
-app.MapHub<ChatHub>("/hub/chat");
 
 app.Run();
