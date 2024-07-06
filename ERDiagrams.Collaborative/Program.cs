@@ -24,19 +24,9 @@ builder.Services.AddSingleton<IMongoClient, MongoClient>(_ =>
 builder.Services.AddControllers()
     .AddJsonOptions(
         options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("CorsPolicy",
-        builderCors => builderCors
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowAnyOrigin()
-            .AllowCredentials()
-            );
-});
+
 var config = new MapperConfiguration(cfg => cfg.CreateMap<Diagram, DiagramDto>());
 var app = builder.Build();
-app.UseCors("CorsPolicy");
 // Configure the HTTP request pipeline.
 
     app.UseSwagger();
