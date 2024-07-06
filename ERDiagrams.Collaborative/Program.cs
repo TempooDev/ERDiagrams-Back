@@ -91,7 +91,7 @@ app.MapPost("/diagrams", async ([FromServices] IMongoClient mongoClient, Diagram
     }).WithName("PostDiagram")
     .WithOpenApi();
 
-app.MapPut("/diagrams/{id}", async ([FromServices] IMongoClient mongoClient, string diagramId, DiagramDto diagramToUpdate) =>
+app.MapPut("/diagrams/{diagramId}", async ([FromServices] IMongoClient mongoClient, string diagramId, DiagramDto diagramToUpdate) =>
     {
         var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
         var diagram =  database.Diagrams.FirstOrDefaultAsync(dia => dia.diagramId.Equals( diagramId));
@@ -107,7 +107,7 @@ app.MapPut("/diagrams/{id}", async ([FromServices] IMongoClient mongoClient, str
     }).WithName("UpdateDiagram")
     .WithOpenApi();
 
-app.MapDelete("/diagrams/{id}", async ([FromServices] IMongoClient mongoClient, string diagramId) =>
+app.MapDelete("/diagrams/{diagramId}", async ([FromServices] IMongoClient mongoClient, string diagramId) =>
 {
     var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
     if (await database.Diagrams.FirstOrDefaultAsync(dia => dia.diagramId == diagramId) is Diagram diagram)
