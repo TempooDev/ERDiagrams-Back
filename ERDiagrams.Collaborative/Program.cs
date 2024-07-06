@@ -22,7 +22,11 @@ builder.Services.AddSingleton<IMongoClient, MongoClient>(_ =>
 builder.Services.AddControllers()
     .AddJsonOptions(
         options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
-var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
+string[] allowedOrigins =
+[
+    "http://localhost:3000",
+    "https://*.vercel.app/"
+];
 
 builder.Services.AddCors(options =>
 {
