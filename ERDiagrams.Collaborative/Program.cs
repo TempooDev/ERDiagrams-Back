@@ -111,7 +111,7 @@ app.MapGet("/diagrams", ([FromServices] IMongoClient mongoClient) =>
     .WithName("GetAllDiagrams")
     .WithOpenApi()    .RequireAuthorization("diagrams:read-write");
 
-app.MapGet("/diagrams/{id}", DiagramDto ([FromServices] IMongoClient mongoClient, string id) =>
+app.MapGet("/diagrams/{diagramId}", DiagramDto ([FromServices] IMongoClient mongoClient, string id) =>
     {
         var mapper = config.CreateMapper();
         var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
