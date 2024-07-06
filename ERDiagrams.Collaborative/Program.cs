@@ -11,11 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSignalR();
 var  connectionString = builder.Configuration.GetConnectionString("MongoDB");
 // Add services to the container.
 builder.Services.AddSingleton<IMongoClient, MongoClient>(_ =>
@@ -24,11 +22,22 @@ builder.Services.AddSingleton<IMongoClient, MongoClient>(_ =>
 builder.Services.AddControllers()
     .AddJsonOptions(
         options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins(allowedOrigins) // Reemplaza con tus orígenes permitidos
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()); // Importante para SignalR
+});
+builder.Services.AddControllers();
+builder.Services.AddSignalR();
 var config = new MapperConfiguration(cfg => cfg.CreateMap<Diagram, DiagramDto>());
 var app = builder.Build();
 // Configure the HTTP request pipeline.
-
+app.UseCors("AllowSpecificOrigin");
     app.UseSwagger();
     app.UseSwaggerUI();
 
@@ -109,7 +118,12 @@ app.MapDelete("/diagrams/{diagramId}", async ([FromServices] IMongoClient mongoC
 
     return Results.NotFound();
 });
+app.UseRouting();
 
-app.MapHub<BoardHub>("/hub/board");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<BoardHub>("/hub/board");
+    // Otros mapeos de endpoints
+});
 
 app.Run();
