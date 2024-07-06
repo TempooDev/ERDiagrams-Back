@@ -30,7 +30,7 @@ builder.Services.AddCors(options =>
         builderCors => builderCors
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .WithOrigins("https://localhost:7112","http://localhost:5010","http://localhost:3000",  "http://localhost:5000", "https://localhost:5001","https://erdiagrams-react-hrcnsaoa7-tempoodevs-projects.vercel.app","https://erdiagrams-react.vercel.app/")
+            .AllowAnyOrigin()
             .AllowCredentials()
             );
 });
