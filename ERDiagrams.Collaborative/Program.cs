@@ -61,12 +61,12 @@ app.MapGet("/diagrams", ([FromServices] IMongoClient mongoClient) =>
     .WithName("GetAllDiagrams")
     .WithOpenApi();
 
-app.MapGet("/diagrams/{diagramId}", DiagramDto ([FromServices] IMongoClient mongoClient, string id) =>
+app.MapGet("/diagrams/{diagramId}", DiagramDto ([FromServices] IMongoClient mongoClient, string diagramId) =>
     {
         
         var mapper = config.CreateMapper();
         var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
-        var diagram =  database.Diagrams.FirstOrDefaultAsync(diagram => diagram.diagramId == id);
+        var diagram =  database.Diagrams.FirstOrDefaultAsync(diagram => diagram.diagramId == diagramId);
         Task.WaitAll();
         return mapper.Map<Diagram, DiagramDto>(diagram.Result);
         
