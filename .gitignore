@@ -364,3 +364,7 @@ FodyWeavers.xsd
 
 .angular/
 .DS_Store
+
+.idea/*
+obj/*
+bin/*
