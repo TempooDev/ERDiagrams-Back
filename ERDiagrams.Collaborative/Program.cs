@@ -80,70 +80,121 @@ app.MapControllers();
 
 app.MapGet("/diagrams", ([FromServices] IMongoClient mongoClient) =>
     {
-        var mapper = config.CreateMapper();
-        var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
-        var diagrams = database.Diagrams.ToArrayAsync();
-        Task.WaitAll();
-        return mapper.Map<Diagram[], DiagramDto[]>(diagrams.Result);
+        try
+        {
+            var mapper = config.CreateMapper();
+            app.Logger.LogInformation("Getting all diagrams");
+            var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
+            var diagrams = database.Diagrams.ToArrayAsync();
+            Task.WaitAll();
+            var diagramDto = mapper.Map<Diagram[], DiagramDto[]>(diagrams.Result);
+            return Results.Ok(diagramDto);
+        }
+        catch (Exception e)
+        {
+            app.Logger.LogError(e.Message);
+            return Results.Problem();
+        }
     })
     .WithName("GetAllDiagrams")
     .WithOpenApi();
 
-app.MapGet("/diagrams/{diagramId}", DiagramDto ([FromServices] IMongoClient mongoClient, string diagramId) =>
+app.MapGet("/diagrams/{diagramId}", ([FromServices] IMongoClient mongoClient, string diagramId) =>
     {
-        var mapper = config.CreateMapper();
-        var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
-        var diagram = database.Diagrams.FirstOrDefaultAsync(diagram => diagram.diagramId == diagramId);
-        Task.WaitAll();
-        return mapper.Map<Diagram, DiagramDto>(diagram.Result);
+        try
+        {
+            var mapper = config.CreateMapper();
+            app.Logger.LogInformation("Getting all diagrams");
+            var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
+            var diagram = database.Diagrams.FirstOrDefaultAsync(diagram => diagram.diagramId == diagramId);
+            Task.WaitAll();
+            if (diagram.Result == null) return Results.NotFound();
+            var diagramDto = mapper.Map<Diagram, DiagramDto>(diagram.Result);
+            return Results.Ok(diagramDto);
+        }
+        catch (Exception e)
+        {
+            app.Logger.LogError(e.Message);
+            return Results.Problem();
+        }
     }).WithName("GetDiagramById")
     .WithOpenApi();
 
 app.MapGet("/diagrams/user/{userId}", ([FromServices] IMongoClient mongoClient, string userId) =>
     {
-        var mapper = config.CreateMapper();
-        var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
-        var diagramResult = database.Diagrams.Where(diagram => diagram.userId == userId).ToArrayAsync();
-        Task.WaitAll();
-        return mapper.Map<Diagram[], DiagramDto[]>(diagramResult.Result);
+        try
+        {
+            var mapper = config.CreateMapper();
+            var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
+            var diagramResult = database.Diagrams.Where(diagram => diagram.userId == userId).ToArrayAsync();
+            Task.WaitAll();
+            var diagramDto = mapper.Map<Diagram[], DiagramDto[]>(diagramResult.Result);
+            return Results.Ok(diagramDto);
+        }
+        catch (Exception e)
+        {
+            app.Logger.LogError(e.Message);
+            return Results.Problem();
+        }
     }).WithName("GetDiagramsByUserId")
     .WithOpenApi();
 app.MapPost("/diagrams", async ([FromServices] IMongoClient mongoClient, Diagram diagram) =>
     {
-        var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
-        database.Diagrams.Add(diagram);
-        await database.SaveChangesAsync();
-        return Results.Created($"/diagrams/{diagram.diagramId}", diagram);
+        try
+        {
+            var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
+            database.Diagrams.Add(diagram);
+            await database.SaveChangesAsync();
+            return Results.Created($"/diagrams/{diagram.diagramId}", diagram);
+        }
+        catch (Exception e)
+        {
+            app.Logger.LogError(e.Message);
+            return Results.Problem();
+        }
     }).WithName("PostDiagram")
     .WithOpenApi();
 
 app.MapPut("/diagrams/{diagramId}",
         async ([FromServices] IMongoClient mongoClient, string diagramId, DiagramDto diagramToUpdate) =>
         {
-            var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
-            var diagram = database.Diagrams.FirstOrDefaultAsync(dia => dia.diagramId.Equals(diagramId));
-            Task.WaitAll();
-            if (diagram.Result is null) return Results.NotFound();
-            diagram.Result.image = diagramToUpdate.image;
-            diagram.Result.name = diagramToUpdate.name;
-            diagram.Result.linkDataArray = diagramToUpdate.linkDataArray;
-            diagram.Result.nodeDataArray = diagramToUpdate.nodeDataArray;
-            await database.SaveChangesAsync();
-            return Results.NoContent();
+            try
+            {
+                var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
+                var diagram = database.Diagrams.FirstOrDefaultAsync(dia => dia.diagramId.Equals(diagramId));
+                Task.WaitAll();
+                if (diagram.Result is null) return Results.NotFound();
+                diagram.Result.image = diagramToUpdate.image;
+                diagram.Result.name = diagramToUpdate.name;
+                diagram.Result.linkDataArray = diagramToUpdate.linkDataArray;
+                diagram.Result.nodeDataArray = diagramToUpdate.nodeDataArray;
+                await database.SaveChangesAsync();
+                return Results.NoContent();
+            }
+            catch (Exception e)
+            {
+                app.Logger.LogError(e.Message);
+                return Results.Problem();
+            }
         }).WithName("UpdateDiagram")
     .WithOpenApi();
 
 app.MapDelete("/diagrams/{diagramId}", async ([FromServices] IMongoClient mongoClient, string diagramId) =>
 {
-    var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
-    if (await database.Diagrams.FirstOrDefaultAsync(dia => dia.diagramId == diagramId) is Diagram diagram)
+    try
     {
+        var database = DiagramDbContext.Create(mongoClient.GetDatabase("ERDiagram"));
+        if (await database.Diagrams.FirstOrDefaultAsync(dia => dia.diagramId == diagramId) is not Diagram diagram)
+            return Results.NotFound();
         database.Diagrams.Remove(diagram);
         await database.SaveChangesAsync();
         return Results.NoContent();
     }
-
-    return Results.NotFound();
+    catch (Exception e)
+    {
+        app.Logger.LogError(e.Message);
+        return Results.Problem();
+    }
 });
 
 #endregion
