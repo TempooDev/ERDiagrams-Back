@@ -23,7 +23,9 @@ builder.Services.AddSingleton<IMongoClient, MongoClient>(_ =>
 #endregion
 
 #region CORS POLICY
-
+builder.Services.AddControllers()
+    .AddJsonOptions(
+        options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 string[] allowedOrigins =
 [
     "http://localhost:3000",
@@ -41,9 +43,7 @@ builder.Services.AddCors(options =>
 
 #endregion
 
-builder.Services.AddControllers()
-    .AddJsonOptions(
-        options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+
 
 #region SERVICES
 
