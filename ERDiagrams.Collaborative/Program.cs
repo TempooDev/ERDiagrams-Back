@@ -23,6 +23,7 @@ builder.Services.AddSingleton<IMongoClient, MongoClient>(_ =>
 #endregion
 
 #region CORS POLICY
+
 builder.Services.AddControllers()
     .AddJsonOptions(
         options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
@@ -44,7 +45,6 @@ builder.Services.AddCors(options =>
 #endregion
 
 
-
 #region SERVICES
 
 builder.Services.AddControllers();
@@ -55,15 +55,24 @@ builder.Services.AddSignalR();
 var config = new MapperConfiguration(cfg => cfg.CreateMap<Diagram, DiagramDto>());
 
 var app = builder.Build();
-// Configure the HTTP request pipeline.
+
 app.UseCors("AllowSpecificOrigin");
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
 
 app.UseHttpsRedirection();
 
+
+app.UseRouting();
 app.UseAuthorization();
+
+#region HUB Endpoints
+
+app.UseEndpoints(endpoints => { endpoints.MapHub<BoardHub>("/hub/board"); });
+
+#endregion
 
 app.MapControllers();
 
@@ -139,14 +148,5 @@ app.MapDelete("/diagrams/{diagramId}", async ([FromServices] IMongoClient mongoC
 
 #endregion
 
-#region HUB
-app.UseRouting();
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapHub<BoardHub>("/hub/board");
-});
-
-#endregion
 
 app.Run();
