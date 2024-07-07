@@ -6,25 +6,25 @@ namespace ERDiagrams.Collaborative.Hubs;
 
 public class BoardHub : Hub
 {
-    public async Task AddToGroup(string groupName)
+    public async Task AddToGroup(string diagramId)
     {
-        await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+        await Groups.AddToGroupAsync(Context.ConnectionId, diagramId);
 
-        await Clients.Group(groupName).SendAsync("Send", $"{Context.ConnectionId} has joined the group {groupName}.");
+        await Clients.Group(diagramId).SendAsync("Send", $"{Context.ConnectionId} has joined the group of diagramId: {diagramId}.");
     }
 
-    public async Task RemoveFromGroup(string groupName)
+    public async Task RemoveFromGroup(string diagramId)
     {
-        await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+        await Groups.RemoveFromGroupAsync(Context.ConnectionId, diagramId);
 
-        await Clients.Group(groupName).SendAsync("Send", $"{Context.ConnectionId} has left the group {groupName}.");
+        await Clients.Group(diagramId).SendAsync("Send", $"{Context.ConnectionId} has left the group of diagramId: {diagramId}.");
     }
-    public async Task Send(Diagram diagram)
-    {
-       
-            await Clients.All.SendAsync("sendDiagram", diagram);
-      
     
+    public async Task SendDiagram(Diagram diagram)
+    {
+
+        await Clients.Group(diagram.diagramId).SendAsync("sendDiagram", diagram);
+
     }
   
    
