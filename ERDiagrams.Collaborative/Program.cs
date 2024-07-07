@@ -140,6 +140,7 @@ app.MapDelete("/diagrams/{diagramId}", async ([FromServices] IMongoClient mongoC
 #endregion
 
 #region HUB
+app.UseRouting();
 
 app.UseEndpoints(endpoints =>
 {
@@ -148,5 +149,4 @@ app.UseEndpoints(endpoints =>
 
 #endregion
 
-app.UseRouting();
 app.Run();
