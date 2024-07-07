@@ -6,6 +6,7 @@ namespace ERDiagrams.Collaborative.Hubs;
 
 public class BoardHub : Hub
 {
+    private Diagram actualDiagram;
     public async Task AddToGroup(string diagramId)
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, diagramId);
@@ -22,9 +23,14 @@ public class BoardHub : Hub
     
     public async Task SendDiagram(Diagram diagram)
     {
-
+        
         await Clients.Group(diagram.diagramId).SendAsync("sendDiagram", diagram);
-
+        actualDiagram = diagram;
+    }
+    
+    public async Task ReceiveDiagram()
+    {
+        await Clients.Caller.SendAsync("receiveDiagram", actualDiagram);
     }
   
    
