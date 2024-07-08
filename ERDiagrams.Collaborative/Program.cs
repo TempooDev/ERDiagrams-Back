@@ -30,7 +30,7 @@ builder.Services.AddControllers()
 string[] allowedOrigins =
 [
     "http://localhost:3000",
-    "https://*.vercel.app/"
+    "https://erdiagrams-react.vercel.app/"
 ];
 
 builder.Services.AddCors(options =>
